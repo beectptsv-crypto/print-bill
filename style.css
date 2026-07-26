@@ -30,6 +30,16 @@ body{
 .topbar h1{
   font-size:22px;
   margin:10px 0 20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.app-logo{
+  height:36px;
+  width:36px;
+  object-fit:cover;
+  border-radius:6px;
 }
 
 .layout{
