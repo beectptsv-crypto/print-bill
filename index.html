@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ພິມບິນຂົນສົ່ງ</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <h1>📦 ລະບົບພິມບິນຝາກຂົນສົ່ງ</h1>
+  </header>
+
+  <main class="layout">
+
+    <!-- ================= FORM ================= -->
+    <section class="panel form-panel">
+      <h2>ຂໍ້ມູນບິນ</h2>
+
+      <form id="billForm">
+        <input type="hidden" id="billId">
+
+        <div class="field">
+          <label>ເລກທີບິນ</label>
+          <input type="text" id="billNo" readonly>
+        </div>
+
+        <fieldset>
+          <legend>ຜູ້ຝາກ</legend>
+          <div class="field">
+            <label>ຊື່ຜູ້ຝາກ</label>
+            <input type="text" id="senderName" placeholder="ຊື່ ແລະ ນາມສະກຸນ" required>
+          </div>
+          <div class="field">
+            <label>ເບີໂທຜູ້ຝາກ</label>
+            <input type="tel" id="senderPhone" placeholder="020 xxxxxxxx" required>
+          </div>
+          <div class="default-row">
+            <button type="button" id="setDefaultSenderBtn" class="btn-small">📌 ຕັ້ງເປັນຄ່າເລີ່ມຕົ້ນ</button>
+            <button type="button" id="clearDefaultSenderBtn" class="btn-small">✖ ລຶບຄ່າເລີ່ມຕົ້ນ</button>
+            <span id="defaultSenderStatus" class="default-status"></span>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>ຜູ້ຮັບ</legend>
+          <div class="field">
+            <label>ຊື່ຜູ້ຮັບ</label>
+            <input type="text" id="receiverName" placeholder="ຊື່ ແລະ ນາມສະກຸນ" required>
+          </div>
+          <div class="field">
+            <label>ເບີໂທຜູ້ຮັບ</label>
+            <input type="tel" id="receiverPhone" placeholder="020 xxxxxxxx" required>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>ຊື່ສາຂາ / ທີ່ຢູ່ຈັດສົ່ງ</legend>
+          <div class="field">
+            <label>ແຂວງ</label>
+            <select id="province">
+              <option value="">-- ເລືອກແຂວງ --</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>ເມືອງ</label>
+            <select id="district">
+              <option value="">-- ເລືອກເມືອງ --</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>ສາຂາ</label>
+            <input type="text" id="village" placeholder="ສາຂາ...">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>ຂົນສົ່ງ</legend>
+          <div class="field">
+            <label>ຊື່ຂົນສົ່ງ</label>
+            <select id="shippingCompany">
+              <option value="ANS">ANS</option>
+              <option value="HAL">HAL</option>
+              <option value="MX">MX</option>
+              <option value="UNITEL">UNITEL</option>
+              <option value="other">ອື່ນໆ...</option>
+            </select>
+            <input type="text" id="shippingCompanyOther" placeholder="ພິມຊື່ຂົນສົ່ງ..." style="margin-top:8px; display:none;">
+          </div>
+          <div class="field">
+            <label>ໝາຍເຫດ</label>
+            <textarea id="note" rows="2" placeholder="ໝາຍເຫດ (ຖ້າມີ)"></textarea>
+          </div>
+        </fieldset>
+
+        <div class="btn-row">
+          <button type="submit" class="btn btn-primary">💾 ບັນທຶກ</button>
+          <button type="button" id="printBtn" class="btn btn-accent">🖨️ ພິມບິນ</button>
+          <button type="button" id="bridgePrintFormBtn" class="btn btn-accent">🖨️ ພິມຜ່ານ Print Bridge</button>
+          <button type="button" id="clearBtn" class="btn btn-ghost">✖ ລ້າງຟອມ</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ================= PREVIEW ================= -->
+    <section class="panel preview-panel">
+      <h2>ຕົວຢ່າງບິນ (ສຳລັບຕິດສິນຄ້າ)</h2>
+      <div class="label-wrapper">
+        <div id="printArea" class="ship-label">
+          <div class="label-header">
+            <div class="label-title">ບິນຝາກຂົນສົ່ງ</div>
+            <div class="label-billno">ເລກທີ: <span id="pv-billNo">-</span></div>
+          </div>
+          <div class="label-date">ວັນທີ: <span id="pv-date">-</span></div>
+
+          <div class="label-block">
+            <div class="label-block-title">ຜູ້ຝາກ</div>
+            <div><b><span id="pv-senderName">-</span></b></div>
+            <div>☎ <span id="pv-senderPhone">-</span></div>
+          </div>
+
+          <div class="label-block">
+            <div class="label-block-title">ຜູ້ຮັບ</div>
+            <div><b><span id="pv-receiverName">-</span></b></div>
+            <div>☎ <span id="pv-receiverPhone">-</span></div>
+          </div>
+
+          <div class="label-block">
+            <div class="label-block-title">ຈັດສົ່ງໄປ</div>
+            <div>ສາຂາ: <span id="pv-village">-</span></div>
+            <div>ເມືອງ: <span id="pv-district">-</span></div>
+            <div>ແຂວງ: <span id="pv-province">-</span></div>
+          </div>
+
+          <div class="label-block">
+            <div class="label-block-title">ຂົນສົ່ງ</div>
+            <div><span id="pv-shippingCompany">-</span></div>
+          </div>
+
+          <div class="label-note">
+            <span id="pv-note"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= PRINT BRIDGE ================= -->
+  <section class="panel printer-panel">
+    <h2>🖨️ Print Bridge (ພິມພາສາລາວໂດຍກົງ)</h2>
+    <p class="printer-note">
+      ສົ່ງບິນເປັນຮູບພາບໄປໃຫ້ເຄື່ອງພິມໂດຍກົງ (ຂ້າມບັນຫາ driver ບໍ່ຮອງຮັບພາສາລາວ).
+      ຕ້ອງແລ່ນ <code>python print_bridge.py</code> ໄວ້ໃນເຄື່ອງກ່ອນ.
+    </p>
+    <div class="printer-grid">
+      <div class="field">
+        <label>ພອດ Print Bridge</label>
+        <input type="number" id="bridgePort" value="9200">
+      </div>
+      <div class="field">
+        <label>ຂະໜາດເຈ້ຍ (Receipt width)</label>
+        <select id="receiptWidth">
+          <option value="80">80 mm</option>
+          <option value="58">58 mm</option>
+          <option value="custom">ກຳນົດເອງ (Custom mm)</option>
+        </select>
+      </div>
+      <div class="field" id="customWidthRow" style="display:none;">
+        <label>ກວ້າງ (mm)</label>
+        <input type="number" id="receiptWidthCustomMM" min="20" max="120" value="80">
+      </div>
+      <div class="field">
+        <label>ຄວາມຍາວສູງສຸດ (mm)</label>
+        <input type="number" id="receiptMaxHeightMM" min="30" max="1000" value="200">
+      </div>
+      <div class="field">
+        <label>ຊື່ເຄື່ອງພິມ (Windows)</label>
+        <select id="bridgePrinterSelect">
+          <option value="">-- ກົດ "ດຶງລາຍຊື່ເຄື່ອງພິມ" ກ່ອນ --</option>
+        </select>
+      </div>
+    </div>
+    <div class="printer-connect-row">
+      <button type="button" id="fetchPrintersBtn" class="btn btn-primary">🔄 ດຶງລາຍຊື່ເຄື່ອງພິມ</button>
+      <button type="button" id="bridgePrintBtn" class="btn btn-accent">🖨️ ພິມຜ່ານ Print Bridge</button>
+      <span id="bridgeStatus" class="printer-status">ຍັງບໍ່ໄດ້ເຊື່ອມຕໍ່ Print Bridge</span>
+    </div>
+    <p class="printer-note">
+      ວິທີຕັ້ງຄ່າ: 1) ຕິດຕັ້ງ Python ແລ້ວຕິດຕັ້ງ library ດ້ວຍ <code>pip install pywin32</code>
+      2) ເປີດ Terminal ໄປຫາໂຟນເດີ້ນີ້ ແລ້ວແລ່ນ <code>python print_bridge.py</code> (ຄ້າງໄວ້ບໍ່ໃຫ້ປິດ)
+      3) ກັບມາໜ້ານີ້ ກົດ "🔄 ດຶງລາຍຊື່ເຄື່ອງພິມ" ແລ້ວເລືອກ "Xprinter POS-80".
+    </p>
+  </section>
+
+  <!-- ================= HISTORY ================= -->
+  <section class="panel history-panel">
+    <div class="history-head">
+      <h2>ປະຫວັດບິນ</h2>
+      <input type="search" id="searchInput" placeholder="🔍 ຄົ້ນຫາ ຊື່ / ເບີໂທ / ເລກທີບິນ">
+    </div>
+    <div class="table-wrap">
+      <table id="historyTable">
+        <thead>
+          <tr>
+            <th>ເລກທີບິນ</th>
+            <th>ວັນທີ</th>
+            <th>ຜູ້ຝາກ</th>
+            <th>ຜູ້ຮັບ</th>
+            <th>ຈັດສົ່ງໄປ</th>
+            <th>ຂົນສົ່ງ</th>
+            <th>ຈັດການ</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+      <p id="emptyMsg" class="empty-msg">ຍັງບໍ່ມີປະຫວັດບິນ</p>
+    </div>
+  </section>
+
+</div>
+
+<script src="laoData.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
